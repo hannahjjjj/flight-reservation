@@ -16,7 +16,15 @@ public class LoggingInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		logger.info("URL: {}", request.getRequestURL());
+	    String requestURL = request.getRequestURL().toString();
+	    String contextPath = request.getContextPath();
+	    String requestURI = requestURL.replaceFirst(request.getScheme() + "://", "")
+	                                  .replaceFirst(":" + request.getServerPort(), "")
+	                                  .replaceFirst(request.getServerName(), "")
+	                                  .replaceFirst(contextPath, "");
+
+	    logger.info("요청 URL: " + requestURI);
+
 		return true;
 	}
 

@@ -2,6 +2,7 @@ package com.project.myapp.member.dao;
 
 import java.util.List;
 
+import com.project.myapp.flight.model.Ticket;
 import com.project.myapp.member.model.Companion;
 import com.project.myapp.member.model.Member;
 
@@ -14,10 +15,15 @@ public interface IMemberRepository {
 	void updateMember(Member member); //회원정보 수정
 	void deleteMember(Member member); //회원탈퇴
 	
-	void findPassword(String memberId); //비밀번호 찾기
-	void updatePassword(String memberId, String password); //비밀번호 수정
+
+	Member idCheck(String memberId);//아이디 체크
+	int checkId(String memberId);//아이디 중복체크
+	void updatePassword(Member member); //임시비밀번호받으면 임시비밀번호로 업데이트
+	void updatePasswordByMember(Member member);
 	
-	void insertPassenger(Companion companion); //동승자 정보 추가
 	
-	void viewReservation(String memberId); //예약 조회
+	List<Member> viewReservation(String memberId); //예약 조회
+
 }
+
+

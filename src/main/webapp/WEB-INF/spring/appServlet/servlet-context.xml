@@ -8,25 +8,46 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
-	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- MVC 어노테이션 위한 태그 -->
 	<annotation-driven />
+
+	
+	<!-- multipartResolver -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="50000000"/>
+	</beans:bean>
+
 
    <!-- 
       Properties 파일을 읽어 오기 위한 태그 
       Java코드에서 @Value('#{id['properties속성']}')
    -->
-   <util:properties id="pt" location="classpath:/config/application.properties"/>
-   
+   <util:properties id="impNumber" location="classpath:/config/application.properties"/>
+  <util:properties id="hostSMTPid" location="classpath:/config/application.properties"/>
+   <util:properties id="hostSMTPpwd" location="classpath:/config/application.properties"/>
+   <util:properties id="fromEmail" location="classpath:/config/application.properties"/>
+   <util:properties id="fromName" location="classpath:/config/application.properties"/> 
 
+   <!-- 시작화면 설정 -->
+   <!-- 
+		View-Controller
+		path="주소창에 이런 입력이 들어오면" view-name="이 페이지로 이동" />
+		View만 보여줘도 되는 페이지  
+		path로 요청이 들어오면 
+		view-name으로 찾아감 ex) /WEB-INF/views/login.jsp
+	-->
+	<view-controller path="/" view-name="/home"/>
+	<view-controller path="/flight/payment" view-name="/flight/payment"/>
+	
+	
    <!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
    	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/css/**" location="/css/" />
-	<resources mapping="/fontawesome/**" location="/fontawesome/" />
-	<resources mapping="/fonts/**" location="/fonts/" />
-	<resources mapping="/img/**" location="/img/" />
-	<resources mapping="/js/**" location="/js/" />
-	<resources mapping="/sass/**" location="/sass/" />
-
+	<resources mapping="/css/**" location="/resources/css/" />
+	<resources mapping="/fontawesome/**" location="/resources/fontawesome/" />
+	<resources mapping="/fonts/**" location="/resources/fonts/" />
+	<resources mapping="/img/**" location="/resources/img/" />
+	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/sass/**" location="/resources/sass/" />
 
 
    <!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -35,21 +56,24 @@
       <beans:property name="suffix" value=".jsp" />
    </beans:bean>
    
-   
    <!-- Controller 추가 -->
-   <context:component-scan base-package="com.project.myapp.member.controller" />
-   <context:component-scan base-package="com.project.myapp"/>
-   
-   
+	<context:component-scan base-package="com.project.myapp.member.controller" />
+	<context:component-scan base-package="com.project.myapp.flight.controller" />
+	<context:component-scan base-package="com.project.myapp.board.controller" />
+  
    <!-- 로그인을 위한 인터셉터 -->
    <!-- 로그인을 해야 들어갈 수 있는 페이지 추가 -->
-   <interceptors>
+    <interceptors>
       <interceptor>
-         <mapping path="/"/>
-         <mapping path="/home"/>
+         <mapping path="/mp/**"/>
+         <mapping path="/flight/ticket/select"/>
+         <mapping path="/board/write"/>
+         <mapping path="/flight/ticket/insert"/>
+         <mapping path="/flight/seat/check"/>
+         <mapping path="/flight/ticket/paymentCompleted"/>
          <beans:bean class="com.project.myapp.common.filter.LoginInterceptor"/>
       </interceptor>
-   </interceptors>
+   </interceptors> 
    
    <!-- URL을 Logging을 위한 Interceptor -->
    <interceptors>
@@ -58,5 +82,7 @@
          <beans:bean class="com.project.myapp.common.filter.LoggingInterceptor"/>
       </interceptor>
    </interceptors>
+
    
 </beans:beans>
+

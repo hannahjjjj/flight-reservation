@@ -9,8 +9,11 @@ import lombok.Data;
 public class Ticket {
 	private int ticketId;
 	private String memberId;
+	private String reservationId;
+	
 	private int scheduleId;
-	private int reservationId;
+	private int scheduleIdToGo;
+	private int scheduleIdToCome;
 	
 	private String name;
 	private String firstName;
@@ -18,14 +21,20 @@ public class Ticket {
 	private String phoneNumber;
 	private Date birthday;
 	private String passportNumber;
-	private Date passport_expiry_date;
+	private Date passportExpiryDate;
 	
-	private String seatType;
+	private int seatType;
 	private int ticketType;
+	
 	private int fare;
+	private int fareToGo;
+	private int fareToCome;
+	
 	private int totalPrice;
 	
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 	
+	// 예약 상태
+	private String reservationStatus;
 }
